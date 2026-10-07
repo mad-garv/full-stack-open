@@ -7,7 +7,7 @@ const Button = (props) => (
 )
 
 const StatisticLine = (props) => (
-  <p>{props.text} {props.value}</p>
+  <p>{props.text} {props.value} {props.unit}</p>
 )
 
 
@@ -32,7 +32,7 @@ const Statistics = (props) => {
       <StatisticLine text="bad" value={props.bad} />
       <StatisticLine text="all" value={total} />
       <StatisticLine text="average" value={average} />
-      <StatisticLine text="positive" value={positive} />
+      <StatisticLine text="positive" value={positive} unit="%" />
     </div>
   )
 }
