@@ -12,6 +12,13 @@ const App = () => {
       name: newName
     }
 
+    const duplicate = persons.some(person => newName === person.name)
+
+    if(duplicate) {
+      alert(`${newName} is already added to phonebook`)
+      return
+    }
+
     setPersons(persons.concat(nameObject))
     setNewName('')
   }
