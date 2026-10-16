@@ -51,26 +51,41 @@ const App = () => {
       })
   }
 
-  return (
-    <div>
+  const deletePerson = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      personService
+        .deleteP(id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+        .catch(error => {
+          alert(`The entry for ${name} was already deleted from server`)
+          setPersons(persons.filter(person => person.id !== id))
+        })
+      console.log('delete button clicked ' + id)
+    }
+  }
 
-      <h2>Phonebook</h2>
+    return (
+      <div>
 
-      <Filter searchFilter={searchFilter} handleFilterChange={handleFilterChange} />
+        <h2>Phonebook</h2>
 
-      <h3>add a new</h3>
+        <Filter searchFilter={searchFilter} handleFilterChange={handleFilterChange} />
 
-      <PersonForm addName={addName}
-        newName={newName} handleNameChange={(event) => setNewName(event.target.value)}
-        newNum={newNum} handleNumChange={(event) => setNewNum(event.target.value)}
-      />
+        <h3>add a new</h3>
 
-      <h3>Numbers</h3>
+        <PersonForm addName={addName}
+          newName={newName} handleNameChange={(event) => setNewName(event.target.value)}
+          newNum={newNum} handleNumChange={(event) => setNewNum(event.target.value)}
+        />
 
-      <Persons personsToShow={personsToShow} />
+        <h3>Numbers</h3>
 
-    </div>
-  )
-}
+        <Persons personsToShow={personsToShow} deletePerson={deletePerson} />
 
-export default App
+      </div>
+    )
+  }
+
+  export default App

@@ -7,7 +7,7 @@
     },
     {
       "name": "Ada Lovelace",
-      "number": "39-44-5323523",
+      "number": "39-44-5232523",
       "id": "2"
     },
     {
@@ -24,26 +24,6 @@
       "name": "save to server",
       "number": "",
       "id": "9oRyP640jf0"
-    },
-    {
-      "name": "server testing",
-      "number": "919",
-      "id": "hqdIEwJzFys"
-    },
-    {
-      "name": "save",
-      "number": "",
-      "id": "LKkI2EXkS_w"
-    },
-    {
-      "name": "new",
-      "number": "",
-      "id": "GRlW6T4MlEc"
-    },
-    {
-      "name": "new again",
-      "number": "",
-      "id": "j2dmDNMqNYA"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
