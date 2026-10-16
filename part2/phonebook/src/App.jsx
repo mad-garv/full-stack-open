@@ -58,11 +58,6 @@ const App = () => {
         .then(() => {
           setPersons(persons.filter(person => person.id !== id))
         })
-        .catch(error => {
-          alert(`The entry for ${name} was already deleted from server`)
-          setPersons(persons.filter(person => person.id !== id))
-        })
-      console.log('delete button clicked ' + id)
     }
   }
 
