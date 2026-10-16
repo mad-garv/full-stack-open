@@ -35,10 +35,28 @@ const App = () => {
       number: newNum
     }
 
-    const duplicate = persons.some(person => newName === person.name)
+    const duplicatePerson = persons.find(p => p.name.toLowerCase() === newName.toLowerCase())
 
-    if (duplicate) {
-      alert(`${newName} is already added to phonebook`)
+    const isDuplicate = !!duplicatePerson;
+    const duplicateId = duplicatePerson ? duplicatePerson.id : null;
+
+    if (isDuplicate) {
+      if (window.confirm
+        (`${newName} is already added to phonebook, replace the old number with a new one?`)
+      ) {
+        const updatedPerson = {...duplicatePerson, number: newNum}
+        personService
+          .update(duplicateId, updatedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id !== duplicateId ? person : returnedPerson))
+            setNewName('')
+            setNewNum('')
+          })
+          .catch(error => {
+            alert(`The person '${duplicatePerson.name}' was already deleted from server`)
+            setPersons(persons.filter(p => p.id !== duplicateId))
+          })
+      }
       return
     }
 
@@ -61,26 +79,26 @@ const App = () => {
     }
   }
 
-    return (
-      <div>
+  return (
+    <div>
 
-        <h2>Phonebook</h2>
+      <h2>Phonebook</h2>
 
-        <Filter searchFilter={searchFilter} handleFilterChange={handleFilterChange} />
+      <Filter searchFilter={searchFilter} handleFilterChange={handleFilterChange} />
 
-        <h3>add a new</h3>
+      <h3>add a new</h3>
 
-        <PersonForm addName={addName}
-          newName={newName} handleNameChange={(event) => setNewName(event.target.value)}
-          newNum={newNum} handleNumChange={(event) => setNewNum(event.target.value)}
-        />
+      <PersonForm addName={addName}
+        newName={newName} handleNameChange={(event) => setNewName(event.target.value)}
+        newNum={newNum} handleNumChange={(event) => setNewNum(event.target.value)}
+      />
 
-        <h3>Numbers</h3>
+      <h3>Numbers</h3>
 
-        <Persons personsToShow={personsToShow} deletePerson={deletePerson} />
+      <Persons personsToShow={personsToShow} deletePerson={deletePerson} />
 
-      </div>
-    )
-  }
+    </div>
+  )
+}
 
-  export default App
+export default App
