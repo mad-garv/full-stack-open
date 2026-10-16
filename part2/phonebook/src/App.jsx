@@ -36,8 +36,7 @@ const App = () => {
     event.preventDefault()
     const personObject = {
       name: newName,
-      number: newNum,
-      id: String(persons.length + 1)
+      number: newNum
     }
 
     const duplicate = persons.some(person => newName === person.name)
@@ -47,9 +46,14 @@ const App = () => {
       return
     }
 
-    setPersons(persons.concat(personObject))
-    setNewName('')
-    setNewNum('')
+    axios
+      .post('http://localhost:3001/persons', personObject)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewNum('')
+      })
+
   }
 
   return (
