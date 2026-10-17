@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import personService from './services/persons'
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNum, setNewNum] = useState('')
   const [searchFilter, setSearchFilter] = useState('')
+  const [notif, setNotif] = useState(null)
 
   useEffect(() => {
     personService
@@ -44,11 +46,15 @@ const App = () => {
       if (window.confirm
         (`${newName} is already added to phonebook, replace the old number with a new one?`)
       ) {
-        const updatedPerson = {...duplicatePerson, number: newNum}
+        const updatedPerson = { ...duplicatePerson, number: newNum }
         personService
           .update(duplicateId, updatedPerson)
           .then(returnedPerson => {
             setPersons(persons.map(person => person.id !== duplicateId ? person : returnedPerson))
+            setNotif(`Updated ${returnedPerson.name}`)
+            setTimeout(() => {
+              setNotif(null)
+            }, 5000)
             setNewName('')
             setNewNum('')
           })
@@ -64,6 +70,10 @@ const App = () => {
       .create(personObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
+        setNotif(`Added ${returnedPerson.name}`)
+        setTimeout(() => {
+          setNotif(null)
+        }, 5000)
         setNewName('')
         setNewNum('')
       })
@@ -83,6 +93,8 @@ const App = () => {
     <div>
 
       <h2>Phonebook</h2>
+
+      <Notification message={notif} />
 
       <Filter searchFilter={searchFilter} handleFilterChange={handleFilterChange} />
 
