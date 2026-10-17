@@ -11,6 +11,7 @@ const App = () => {
   const [newNum, setNewNum] = useState('')
   const [searchFilter, setSearchFilter] = useState('')
   const [notif, setNotif] = useState(null)
+  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
     personService
@@ -51,16 +52,17 @@ const App = () => {
           .update(duplicateId, updatedPerson)
           .then(returnedPerson => {
             setPersons(persons.map(person => person.id !== duplicateId ? person : returnedPerson))
+            setIsError(false)
             setNotif(`Updated ${returnedPerson.name}`)
-            setTimeout(() => {
-              setNotif(null)
-            }, 5000)
+            setTimeout(() => setNotif(null), 5000)
             setNewName('')
             setNewNum('')
           })
           .catch(error => {
-            alert(`The person '${duplicatePerson.name}' was already deleted from server`)
+            setIsError(true)
+            setNotif(`Information of '${duplicatePerson.name}' has already been removed from server`)
             setPersons(persons.filter(p => p.id !== duplicateId))
+            setTimeout(() => setNotif(null), 5000)
           })
       }
       return
@@ -69,11 +71,10 @@ const App = () => {
     personService
       .create(personObject)
       .then(returnedPerson => {
+        setIsError(false)
         setPersons(persons.concat(returnedPerson))
         setNotif(`Added ${returnedPerson.name}`)
-        setTimeout(() => {
-          setNotif(null)
-        }, 5000)
+        setTimeout(() => setNotif(null), 5000)
         setNewName('')
         setNewNum('')
       })
@@ -94,7 +95,7 @@ const App = () => {
 
       <h2>Phonebook</h2>
 
-      <Notification message={notif} />
+      <Notification message={notif} isError={isError}/>
 
       <Filter searchFilter={searchFilter} handleFilterChange={handleFilterChange} />
 
