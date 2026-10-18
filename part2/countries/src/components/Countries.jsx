@@ -1,6 +1,6 @@
 import Country from "./Country"
 
-const Countries = ({ countriesToShow }) => {
+const Countries = ({ countriesToShow, handleShowClick }) => {
     return (
         <div>
             {countriesToShow.length > 10 && (
@@ -11,6 +11,7 @@ const Countries = ({ countriesToShow }) => {
                     {countriesToShow.map(country => (
                         <li key={country.cca3}>
                             {country.name.common}
+                            <button onClick={() => handleShowClick(country)}>Show</button>
                         </li>
                     ))}
                 </ul>
